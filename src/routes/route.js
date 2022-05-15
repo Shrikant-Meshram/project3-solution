@@ -12,7 +12,7 @@ router.post("/login", userLogin)
 //----------Book-------------------//
 router.post("/books", authentication,authorization, createBook)
 router.get("/books", authentication, getBookByQueryParams)
-router.get("/books/:bookId", authentication, getBookById)
+router.get("/books/:bookId", authentication,authorization ,getBookById)
 router.put("/books/:bookId", authentication,authorization, updateBookById)
 router.delete("/books/:bookId", authentication,authorization, deleteById)
 
