@@ -62,13 +62,8 @@ const getBookByQueryParams = async (req, res) => {
             if (requestBody.subcategory) {filterQuery.subcategory = requestBody.subcategory.split(",").map(el => el.trim())}
         }
 
-<<<<<<< HEAD
-        let bookData = await bookModel.find(filterQuery).sort({ title: 1 }).select({ _id: 1, title: 1, excerpt: 1, userId: 1, category: 1, releasedAt: 1, reviews: 1 ,isDeleted:1 })
-        if (!bookData) return res.status(404).send({ status: false, msg: "No Book found" })
-=======
-        let bookData = await bookModel.find(filterQuery).sort({ title: 1 })   //.select({ _id: 1, title: 1, excerpt: 1, userId: 1, category: 1, releasedAt: 1, reviews: 1 ,isDeleted:1 })
+        let bookData = await bookModel.find(filterQuery).sort({ title: 1 }) .select({ _id: 1, title: 1, excerpt: 1, userId: 1, category: 1, releasedAt: 1, reviews: 1 ,isDeleted:1 })
         if (!bookData) return res.status(404).send({ status: false, Message: "No Book found" })
->>>>>>> 0ab0451879230ba9bb193a42836a5fb6c4d83118
 
         return res.status(201).send({ status: true, Message: "Found successfully", data: bookData })
 
