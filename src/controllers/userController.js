@@ -56,7 +56,7 @@ const userCreate = async function (req, res) {
     catch (err) {
         res.status(500).send({ Error: err.message })
     }
-}
+} 
 //#######################################################################################################################################################################
 const userLogin = async function (req, res) {
     try {
@@ -69,7 +69,7 @@ const userLogin = async function (req, res) {
         const userLogin = await userModel.findOne({ email: email, password: password })
         if (!userLogin) return res.status(400).send({ status: false, message: "Invalid Login Credentials" })
 
-        const token = await jwt.sign({ userId: userLogin._id }, "Project3/BookManagement(@#@42)", { expiresIn: "10s" })
+        const token = await jwt.sign({ userId: userLogin._id }, "Project3/BookManagement(@#@42)", { expiresIn: "1d" })
         console.log(token)
         return res.status(200).send({ status: true, message: "Login Successfully", data: token })
     }
