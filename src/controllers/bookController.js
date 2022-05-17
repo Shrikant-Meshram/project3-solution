@@ -65,7 +65,7 @@ const getBookByQueryParams = async (req, res) => {
         let bookData = await bookModel.find(filterQuery).sort({ title: 1 }).select({ _id: 1, title: 1, excerpt: 1, userId: 1, category: 1, releasedAt: 1, reviews: 1 ,isDeleted:1 })
         if (!bookData) return res.status(404).send({ status: false, message: "No Book found" })
 
-        return res.status(201).send({ status: true, message: "Found successfully", data: bookData })
+        return res.status(200).send({ status: true, message: "Found successfully", data: bookData })
 
     } catch (err) {
         res.status(500).send({ status: false, Error: err.message })
@@ -86,7 +86,7 @@ const getBookById = async (req, res) => {
 
         bookDetails.reviewsData = reviewdata
 
-        return res.status(201).send({ status: true, message: "Success", data: bookDetails })
+        return res.status(200).send({ status: true, message: "Success", data: bookDetails })
 
     } catch (err) {
         res.status(500).send({ status: false, Error: err.message })
