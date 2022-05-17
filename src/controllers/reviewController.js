@@ -3,7 +3,7 @@ const bookModel = require("../models/bookModel")
 const mongoose = require("mongoose")
 //#######################################################################################################################################################################
 //Here We Requiring All the validation function from util/validations
-const {isValid,isValidRequestBody,isValidObjectId} = require("../utils/validations")
+const { isValid, isValidRequestBody, isValidObjectId } = require("../utils/validations")
 //#######################################################################################################################################################################
 
 const createReview = async function (req, res) {
@@ -21,11 +21,11 @@ const createReview = async function (req, res) {
         if (reviewedBy)
             if (!isValid(reviewedBy)) return res.status(400).send({ status: false, message: "Reviewby field Should be Valid..." })
 
-        if (!review) return res.status(400).send({ status: false, message: "review field is Required ..." })
-        if (!isValid(review)) return res.status(400).send({ status: false, message: "review field Should be Valid..." })
+        if (review)
+            if (!isValid(review)) return res.status(400).send({ status: false, message: "review field Should be Valid..." })
 
-        if (rating)
-            if (!/\d/.test(rating)) return res.status(400).send({ status: false, message: "rating  should be number ..." })
+        if (!rating) return res.status(400).send({ status: false, message: "rating field is Required ..." })
+        if (!/\d/.test(rating)) return res.status(400).send({ status: false, message: "rating  should be number ..." })
         if (rating > 5 || rating < 1 || typeof rating != "number") return res.status(400).send({ status: false, message: "rating range should be 1-5 ..." })
 
         requestBodyReview.reviewedAt = new Date()
@@ -57,9 +57,9 @@ const updateReview = async function (req, res) {
         const reviewExist = await reviewModel.findOne({ _id: reviewId, isDeleted: false })
         if (!reviewExist) return res.status(404).send({ status: false, message: "Review Not Found or Maybe Deleted" })
 
-        
-        const bookReview = await reviewModel.findOne({_id: reviewId, bookId: bookId})
-        if(!bookReview) return res.status(400).send({ status: false, message: "This review is not belong to this book,So You cant Update" })
+
+        const bookReview = await reviewModel.findOne({ _id: reviewId, bookId: bookId })
+        if (!bookReview) return res.status(400).send({ status: false, message: "This review is not belong to this book,So You cant Update" })
 
         if (!isValidRequestBody(requestedBody)) return res.status(400).send({ status: false, message: "Invalid request parmeters,Please provide something to Update review" })
 
@@ -97,8 +97,8 @@ const deleteReview = async function (req, res) {
 
         //--------------------------------------------------Deleted here--------------------------------------------------//
 
-        const bookReview = await reviewModel.findOne({_id: reviewId, bookId: bookId})
-        if(!bookReview) return res.status(400).send({ status: false, message: "This review is not belong to this book" })
+        const bookReview = await reviewModel.findOne({ _id: reviewId, bookId: bookId })
+        if (!bookReview) return res.status(400).send({ status: false, message: "This review is not belong to this book" })
 
         const deletedReview = await reviewModel.findOneAndUpdate({ _id: reviewId, bookId: bookId }, { $set: { isDeleted: true, DeletedAt: Date.now() } }, { new: true });
         await bookModel.findOneAndUpdate({ _id: bookId }, { $inc: { reviews: -1 } })
